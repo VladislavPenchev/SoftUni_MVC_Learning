@@ -1,5 +1,6 @@
 ﻿namespace CatsServer
 {
+    using Infrastructure;
     using Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -8,15 +9,16 @@
     using Microsoft.Extensions.DependencyInjection;
     using System.Linq;
     using System.Net.Http.Headers;
+    using System.Threading.Tasks;
 
     public class Startup
     {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CatsDbContext>(options =>
-            options.UseSqlServer("Server=.;Database=CatsServerDb;Integrated Security=True;"));
+            options.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=CatsServerDb;Initial Catalog=True;"));
         }
-        
+        //Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.Use((context, next) =>
@@ -33,7 +35,7 @@
 
             app.MapWhen(
                 ctx => ctx.Request.Path.Value == "/"
-                && ctx.Request.Method == "GET", 
+                && ctx.Request.Method == HttpMethod.Get, 
                 home =>
                 {
                     home.Run(async (context) =>
@@ -63,6 +65,19 @@
                         }
 
                     });
+                });
+
+            app.MapWhen(req => req.Request.Path.Value == "/cat/add"
+                && req.Request.Method == HttpMethod.Get,
+                catAdd =>
+                {
+                    catAdd.Run((context) =>
+                    {
+                        context.Response.StatusCode = 302;
+                        context.Response.Headers.Add("Location", "/cats-add-form.html");
+                        return Task.CompletedTask;
+                    });
+
                 });
 
             app.Run(async (context) =>
