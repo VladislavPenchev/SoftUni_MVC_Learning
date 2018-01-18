@@ -16,10 +16,6 @@
         {
 
         }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer(@"Server=./SQLEXPRESS;Database=CatsServerDb;Trusted_Connection=True;");
-        //}
+        
     }
 }

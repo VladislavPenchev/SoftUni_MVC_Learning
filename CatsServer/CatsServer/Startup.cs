@@ -10,6 +10,7 @@
     using System.Linq;
     using System.Net.Http.Headers;
     using System.Threading.Tasks;
+    using System.Diagnostics;
 
     public class Startup
     {
@@ -17,8 +18,10 @@
         {
             services.AddDbContext<CatsDbContext>(options =>
             options.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=CatsServerDb;Initial Catalog=True;"));
+            
         }
-        //Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
+              
+        
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.Use((context, next) =>
@@ -26,6 +29,8 @@
                 context.RequestServices.GetRequiredService<CatsDbContext>().Database.Migrate();
                 return next();
             });
+            
+            app.UseStaticFiles();
 
             app.Use((context, next) =>
             {
@@ -54,28 +59,62 @@
                             .ToList();
 
                         await context.Response.WriteAsync("<ul>");
+
+                        
+                        foreach (var cat in catLinks)
+                        {
+                            await context.Response.WriteAsync($@"<li><a href=""/cat/{cat.Id}>{cat.Name}</a></li>");
+                        }
+                        await context.Response.WriteAsync("</ul>");
+
                         await context.Response.WriteAsync(@"
                               <form action =""/cat/add"">
                               <input type =""submit"" value=""Add Cat""/>        
                               </form>");
 
-                        foreach (var cat in catLinks)
-                        {
-                            await context.Response.WriteAsync($@"<li><a href=""/cat/{cat.Id}>{cat.Name}</a></li>");
-                        }
-
                     });
                 });
 
-            app.MapWhen(req => req.Request.Path.Value == "/cat/add"
-                && req.Request.Method == HttpMethod.Get,
+            app.MapWhen(req => req.Request.Path.Value == "/cat/add",
                 catAdd =>
-                {
-                    catAdd.Run((context) =>
+                {                   
+                    catAdd.Run( async (context) =>
                     {
-                        context.Response.StatusCode = 302;
-                        context.Response.Headers.Add("Location", "/cats-add-form.html");
-                        return Task.CompletedTask;
+                        if (context.Request.Method == HttpMethod.Get)
+                        {
+                            context.Response.Redirect("/cats-add-form.html");
+                        }
+                        else if (context.Request.Method == HttpMethod.Post)
+                        {
+                             var db = context.RequestServices.GetRequiredService<CatsDbContext>();
+                            
+                             var formData = context.Request.Form;
+
+                             var cat = new Cat
+                             {
+                                 Name = formData["Name"],
+                                 Age = int.Parse(formData["Age"]),
+                                 Breed = formData["Breed"],
+                                 ImageUrl = formData["ImageUrl"]
+
+                             };
+
+                            db.Add(cat);
+
+                            try
+                            {
+                                await db.SaveChangesAsync();
+
+                                context.Response.Redirect("/");
+                            }
+                            catch
+                            {
+                                await context.Response.WriteAsync("<h2>Invalid cat data!</h2>");
+                                await context.Response.WriteAsync(@"<href== ""/cat/add"">Back To The Form</a>");
+                            }
+
+                        }
+                        
                     });
 
                 });

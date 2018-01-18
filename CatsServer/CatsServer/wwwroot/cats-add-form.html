@@ -1,10 +1,17 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-    <h1>Add Cat</h1>
-</body>
-</html>
+﻿<h1>Add Cat</h1>
+
+<form method="post" action="/cat/add">
+    <label for="Name">Name:</label>
+    <input type="text" name="Name" id="Name" />
+    <br />
+    <label for="Age">Age:</label>
+    <input type="number" name="Age" />
+    <br />
+    <label for="Bread">Bread:</label>
+    <input type="text" name="Bread" />
+    <br />
+    <label for="ImageUrl">ImageUrl:</label>
+    <input type="url" name="ImageUrl" />
+    <br />
+    <input type="submit" value="Add Cat" />
+</form>
