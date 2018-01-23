@@ -2,6 +2,7 @@
 {
     using Infrastructure;
     using Data;
+    using Infrastructure.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -20,28 +21,9 @@
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //    //app.UseDatabaseErrorPage(); // -> ako bazata ne moje da se migrira da pokaje greshka
-            //}
-
-            //app.ApplicationServices.GetRequiredService<CatsDbContext>().Database.Migrate();
-
-
-            app.Use((context, next) =>
-            {
-                context.RequestServices.GetRequiredService<CatsDbContext>().Database.Migrate();
-                return next();
-            });
-
+            app.UseDataBaseMigraiton();
             app.UseStaticFiles();
-
-            app.Use((context, next) =>
-            {
-                context.Response.Headers.Add("Content-Type", "text/html");
-                return next();
-            });
+            app.UseHtmlContentType();
 
             app.MapWhen(
                 ctx => ctx.Request.Path.Value == "/"
