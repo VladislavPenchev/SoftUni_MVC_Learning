@@ -1,5 +1,6 @@
 ﻿namespace CatServerSecondTime
 {
+    using Infrastructure;
     using Data;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -25,12 +26,15 @@
             //}
 
             //app.ApplicationServices.GetRequiredService<CatsDbContext>().Database.Migrate();
+                       
 
             app.Use((context, next) =>
             {
                 context.RequestServices.GetRequiredService<CatsDbContext>().Database.Migrate();
                 return next();
             });
+
+            app.UseStaticFiles();
 
             app.Use((context,next) =>
             {
@@ -40,7 +44,7 @@
 
             app.MapWhen(
                 ctx => ctx.Request.Path.Value == "/"
-                && ctx.Request.Method == "GET",
+                && ctx.Request.Method == HttpMethod.Get,
                 home =>
             {
                 home.Run(async (context) => 
@@ -71,6 +75,45 @@
                         </form>");
                 });
             });
+
+            app.MapWhen(req => req.Request.Path.Value == "/cat/add",
+                    catAdd => {                        
+                        catAdd.Run(async (context) =>
+                        {
+                            if (context.Request.Method == HttpMethod.Get)
+                            {
+                                context.Response.Redirect("/cats-add-form.html");
+                            }
+                            else if(context.Request.Method == HttpMethod.Post)
+                            {
+                                var db = context.RequestServices.GetRequiredService<CatsDbContext>();
+                                
+                                    var formData = context.Request.Form;
+
+                                    var cat = new Cat
+                                    {
+                                        Name = formData["Name"],
+                                        Age = int.Parse(formData["Age"]),
+                                        Bread = formData["Bread"],
+                                        ImageUrl = formData["ImageUrl"]
+                                    };
+
+                                db.Add(cat);
+
+                                try
+                                {
+                                    await db.SaveChangesAsync();
+                                    
+                                    context.Response.Redirect("/");
+                                }
+                                catch 
+                                {
+                                    await context.Response.WriteAsync("<h2>Invalid cat data!</h2>");
+                                    await context.Response.WriteAsync(@"<a href==""/cat/add"">Back To The Form</a>");
+                                }
+                            }
+                        });
+                    });
 
             //posledno se execute-va
             app.Run(async (context) =>
