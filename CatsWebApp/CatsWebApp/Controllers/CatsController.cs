@@ -5,22 +5,21 @@
 
     public class CatsController : Controller
     {
-        public IActionResult Index()
-        {
-            var model = new CatDetailsModel
-            {
-                Id = 1,
-                Name = "Vankata"
-            };
+        public IActionResult Index() => View();
 
+        [HttpPost]
+        public IActionResult Index(CatDetailsModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home ");
+            }
             return View(model);
         }
-        
+
+
         // cats/create
-        public IActionResult Create(int? id)
-        {
-            return View();
-        }
+        public IActionResult Create() => View();
 
         //public IActionResult Create() => View();   -> samo ako e ednoredov  red
     }
