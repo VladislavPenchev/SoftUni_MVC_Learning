@@ -4,25 +4,23 @@
     using CatServerSecondTime.Infrastructure;
     using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
     using System.Threading.Tasks;
 
     public class DatabaseMigrationMiddleware
     {
         private readonly RequestDelegate next;
-        private readonly CatsDbContext db;
 
         public DatabaseMigrationMiddleware(
-            RequestDelegate next,
-            CatsDbContext db)
+            RequestDelegate next)
         {
             this.next = next;
-            this.db = db;
             
         }
 
         public Task Invoke(HttpContext context)
         {
-            this.db.Database.Migrate();
+            context.RequestServices.GetRequiredService<CatsDbContext>().Database.Migrate();
 
             return this.next(context);
         }

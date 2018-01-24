@@ -8,7 +8,6 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
-    using System.Linq;
     using System;
 
     public class Startup
@@ -24,45 +23,9 @@
             app.UseDataBaseMigraiton();
             app.UseStaticFiles();
             app.UseHtmlContentType();
-
-            app.MapWhen(
-                ctx => ctx.Request.Path.Value == "/"
-                && ctx.Request.Method == HttpMethod.Get,
-                home =>
-            {
-                home.Run(async (context) =>
-                {
-                    await context.Response.WriteAsync($"<h1>{env.ApplicationName}</h1>");
-
-                    var db = context.RequestServices.GetRequiredService<CatsDbContext>();
-
-                    using (db)
-                    {
-                        var catData = db
-                            .Cats
-                            .Select(c => new
-                            {
-                                c.Id,
-                                c.Name
-                            })
-                            .ToList();
-                        await context.Response.WriteAsync("<ul>");
-
-                        foreach (var cat in catData)
-                        {
-                            await context.Response.WriteAsync($@"<li><a href=""/cats/{cat.Id}"">{cat.Name}</a></li>");
-                        }
-
-                        await context.Response.WriteAsync("</ul>");
-                        await context.Response.WriteAsync(@"
-                        <form action=""/cat/add"">
-                            <input type=""submit"" value=""Add Cat""/>
-                        </form>");
-                    }
+            app.UseRequestHandlers();
 
 
-                });
-            });
 
             app.MapWhen(
                 ctx => ctx.Request.Path.Value == "/cat/add",
@@ -89,8 +52,6 @@
                                     Bread = formData["Bread"],
                                     ImageUrl = formData["ImageUrl"]
                                 };
-
-
                                 
                                 try
                                 {
