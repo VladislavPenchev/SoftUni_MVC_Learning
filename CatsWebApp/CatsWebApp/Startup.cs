@@ -48,7 +48,7 @@
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.UseStaticFiles(); // -> wwwroot vsichko stava publichno
 
             app.UseAuthentication();
 
