@@ -1,21 +1,27 @@
 ﻿namespace CatsWebApp.Controllers
 {
+    using CatsWebApp.Models;
     using Microsoft.AspNetCore.Mvc;
-    [Route("mycats")]
-    public class CatsController
+
+    public class CatsController : Controller
     {
-        //mycats/mycreate
-        [Route("mycreate")]
-        public object Create()
+        public IActionResult Index()
         {
-            return "Neshto drugo";
+            var model = new CatDetailsModel
+            {
+                Id = 1,
+                Name = "Vankata"
+            };
+
+            return View(model);
+        }
+        
+        // cats/create
+        public IActionResult Create(int? id)
+        {
+            return View();
         }
 
-        // mycats/mydetails
-        [Route("mydetails")]
-        public object Details(int id)
-        {
-            return "Test";
-        }
+        //public IActionResult Create() => View();   -> samo ako e ednoredov  red
     }
 }
