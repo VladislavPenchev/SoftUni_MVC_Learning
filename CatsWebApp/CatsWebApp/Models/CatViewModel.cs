@@ -12,21 +12,22 @@
         [MaxLength(10, ErrorMessage = "Invalid length. It should be below 10")]
         public string Name { get; set; }
 
-        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        //{
-        //    var errors = new List<ValidationResult>();
 
-        //    if (Id == 5 && Name == "Pesho")
-        //    {
-        //        yield return new ValidationResult("Sorry, Id cannot be 5 if your name is Pesho");
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var errors = new List<ValidationResult>();
 
-        //    }
-        //    else if(Id == 6)
-        //    {
-        //        yield return new ValidationResult("DASDASDASDA");
-        //    }
+            if (Id == 5 && Name == "Pesho")
+            {
+                errors.Add(new ValidationResult("Sorry, Id cannot be 5 if your name is Pesho"));
 
-        //    return errors;
-        //}
+            }
+            else if (Id == 6)
+            {
+                errors.Add(new ValidationResult("DASDASDASDA"));
+            }
+
+            return errors;
+        }
     }
 }

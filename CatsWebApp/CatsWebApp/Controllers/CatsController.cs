@@ -1,20 +1,35 @@
 ﻿namespace CatsWebApp.Controllers
 {
     using CatsWebApp.Models;
+    using CatsWebApp.Services;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     public class CatsController : Controller
     {
-        public IActionResult Index() => View();
+        private readonly ICatService cats;
 
+        public CatsController(ICatService cats)
+        {
+            this.cats = cats;
+        }
+
+        [Authorize]
+        public IActionResult Index()
+        {
+            Response.Cookies.Append("My - Custom - Cookie", "MVC is cool");
+
+            return View();
+        }
+
+        [Authorize]
         [HttpPost]
         public IActionResult Index(CatDetailsModel model)
         {
-            if (ModelState.IsValid)
-            {
-                return RedirectToAction(nameof(HomeController.Index), "Home ");
-            }
-            return View(model);
+            //vzimane na usera emaila
+            //var email = User.Identity.Name;
+
+            return View();
         }
 
 
