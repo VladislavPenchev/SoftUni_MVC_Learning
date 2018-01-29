@@ -1,10 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CarDealer.Services.Models
+﻿namespace CarDealer.Services.Models
 {
-    class CustomerModel
+    using System;
+
+    public class CustomerModel
     {
+        public string Name { get; set; }
+
+        public DateTime BirthDay { get; set; }
+
+        public bool IsYoungDriver { get; set; }
     }
 }

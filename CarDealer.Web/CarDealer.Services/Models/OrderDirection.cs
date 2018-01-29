@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CarDealer.Services.Models
+﻿namespace CarDealer.Services.Models
 {
-    class OrderType
+    public enum OrderDirection
     {
+        Ascending = 1,
+        Descending = 2
     }
 }
