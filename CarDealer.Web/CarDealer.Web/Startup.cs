@@ -8,7 +8,6 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Data.Models;
-    using CarDealer.Web.Services;
 
     public class Startup
     {
@@ -27,8 +26,6 @@
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<CarDealerDbContext>()
                 .AddDefaultTokenProviders();
-            
-            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
         }
