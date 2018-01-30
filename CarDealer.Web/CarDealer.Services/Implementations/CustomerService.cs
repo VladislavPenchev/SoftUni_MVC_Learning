@@ -15,7 +15,7 @@
             this.db = db;
         }
 
-        public IEnumerable<CustomerModel> OrderedCustomers(OrderDirection order)
+        public IEnumerable<CustomerModel> Ordered(OrderDirection order)
         {
             var customersQuery = this.db.Customers.AsQueryable();
 

@@ -31,6 +31,8 @@
 
             services.AddTransient<ICustomerService, CustomerService>();
 
+            services.AddTransient<ICarService, CarService>();
+
             services.AddMvc();
         }
 
@@ -51,17 +53,7 @@
 
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
-            {
-            routes.MapRoute(
-                name: "customers",
-                template: "customers/all/{order}",
-                defaults: new { controller = "Customers", action = "All" });
-
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvcWithDefaultRoute();
         }
     }
 }

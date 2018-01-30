@@ -3,8 +3,8 @@
     using Models;
     using System.Collections.Generic;
 
-    public interface ICustomerService
+    public interface ICarService
     {
-        IEnumerable<CustomerModel> Ordered(OrderDirection order);
+        IEnumerable<CarModel> ByMake(string make);
     }
 }
