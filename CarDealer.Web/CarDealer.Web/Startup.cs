@@ -8,6 +8,8 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Data.Models;
+    using Services;
+    using Services.Implementations;
 
     public class Startup
     {
@@ -26,6 +28,8 @@
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<CarDealerDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddTransient<ICustomerService, CustomerService>();
 
             services.AddMvc();
         }
@@ -49,6 +53,11 @@
 
             app.UseMvc(routes =>
             {
+            routes.MapRoute(
+                name: "customers",
+                template: "customers/all/{order}",
+                defaults: new { controller = "Customers", action = "All" });
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
