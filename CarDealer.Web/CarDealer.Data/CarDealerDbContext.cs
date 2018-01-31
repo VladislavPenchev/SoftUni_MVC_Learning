@@ -21,6 +21,8 @@
 
         public DbSet<Part> Parts { get; set; }
 
+        public DbSet<PartCar> PartCars { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder

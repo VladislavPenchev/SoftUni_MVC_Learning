@@ -11,9 +11,10 @@ using System;
 namespace CarDealer.Data.Migrations
 {
     [DbContext(typeof(CarDealerDbContext))]
-    partial class CarDealerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180131100707_NewMig")]
+    partial class NewMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

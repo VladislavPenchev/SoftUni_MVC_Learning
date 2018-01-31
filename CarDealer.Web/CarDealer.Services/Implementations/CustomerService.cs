@@ -23,12 +23,12 @@
             {
                 case OrderDirection.Ascending:
                     customersQuery = customersQuery
-                        .OrderBy(c => c.BirthDay)
+                        .OrderBy(c => c.BirthDate)
                         .ThenBy(c => c.Name);
                     break;
                 case OrderDirection.Descending:
                     customersQuery = customersQuery
-                        .OrderByDescending(c => c.BirthDay)
+                        .OrderByDescending(c => c.BirthDate)
                         .ThenBy(c => c.Name);
                     break;
                 default:
@@ -39,7 +39,7 @@
                         .Select(c => new CustomerModel
                         {
                             Name = c.Name,
-                            BirthDay = c.BirthDay,
+                            BirthDay = c.BirthDate,
                             IsYoungDriver = c.IsYoungDriver
                         })
                         .ToList();
