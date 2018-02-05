@@ -11,8 +11,8 @@ using System;
 namespace CarDealer.Data.Migrations
 {
     [DbContext(typeof(CarDealerDbContext))]
-    [Migration("20180205102528_InitialTables")]
-    partial class InitialTables
+    [Migration("20180205104312_InitialTables_2")]
+    partial class InitialTables_2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -91,7 +91,7 @@ namespace CarDealer.Data.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("PartCar");
+                    b.ToTable("PartCars");
                 });
 
             modelBuilder.Entity("CarDealer.Data.Models.Sale", b =>

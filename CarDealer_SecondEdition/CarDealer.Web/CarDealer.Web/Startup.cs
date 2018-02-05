@@ -7,7 +7,9 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using CarDealer.Web.Data;
-    using CarDealer.Models;
+    using Services;
+    using Services.Implementation;
+    using CarDealer.Data.Models;
 
     public class Startup
     {
@@ -26,6 +28,8 @@
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<CarDealerDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddTransient<ICustomerService, CustomerService>();
             
             services.AddMvc();
         }
@@ -46,9 +50,15 @@
             app.UseStaticFiles();
 
             app.UseAuthentication();
+                       
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "customers",
+                    template: "customers/all/{order}",
+                    defaults: new {controller = "Customers", action = "All"});
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

@@ -90,7 +90,7 @@ namespace CarDealer.Data.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("PartCar");
+                    b.ToTable("PartCars");
                 });
 
             modelBuilder.Entity("CarDealer.Data.Models.Sale", b =>
