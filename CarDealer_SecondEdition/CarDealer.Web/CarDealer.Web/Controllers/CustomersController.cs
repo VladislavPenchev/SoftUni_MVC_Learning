@@ -13,14 +13,14 @@
         {
             this.customers = customers;
         }
-
+        [Route("customers/all/{order}")]
         public IActionResult All(string order)
         {
             var orderDirection = order.ToLower() == "ascending"
                 ? OrderDirection.Asending
                 : OrderDirection.Desending;
 
-            var customers = this.customers.OrderedCustomers(orderDirection);
+            var customers = this.customers.Ordered(orderDirection);
 
             return View(new AllCustomersModel
             {

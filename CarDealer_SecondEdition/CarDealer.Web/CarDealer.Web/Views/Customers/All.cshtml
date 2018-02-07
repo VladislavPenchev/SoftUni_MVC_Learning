@@ -9,7 +9,7 @@
 <h3>Ordered in @Model.OrderDirection.ToString().ToLower() direction</h3>
 
 
-<table class="table">
+<table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>
@@ -24,7 +24,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var customer in Model.Customers
+        @foreach (var customer in Model.Customers)
         {
             <tr>
                 <td>
@@ -34,7 +34,7 @@
                     @customer.Birthdate.ToShortTimeString()
                 </td>
                 <td>
-                    @(customer.IsYoungDriver ? "Yes" : "No"))
+                    @(customer.IsYoungDriver ? "Yes" : "No")
                 </td>
             </tr>
         }
