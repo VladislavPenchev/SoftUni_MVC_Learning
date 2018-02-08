@@ -5,6 +5,8 @@
     using Data;
     using System.Linq;
     using System;
+    using CarDealer.Services.Models.Customers;
+    using CarDealer.Services.Models.Sales;
 
     public class CustomerService : ICustomerService
     {
@@ -44,6 +46,25 @@
                         })
                         .ToList();
         }
+
+        public CustomerTotalSalesModel TotalSaleById(int id)
+
+                 => this
+                   .db
+                   .Customers
+                   .Where(c => c.Id == id)
+                   .Select(c => new CustomerTotalSalesModel
+                   {
+                       Name = c.Name,
+                       IsYoungDriver = c.IsYoungDriver,
+                       BoughtCars = c.Sales.Select(s => new SaleModel
+                       {
+                           Price = s.Car.Parts.Sum(p => p.Part.Price),
+                           Discout = s.Discount
+                       })
+                   })
+                   .FirstOrDefault();
+
 
     }
 }
