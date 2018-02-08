@@ -21,6 +21,7 @@
             <td>
                 Discounted Price
             </td>
+            <td></td>
         </tr>
     </thead>
     <tbody>
@@ -38,6 +39,9 @@
                 </td>
                 <td>
                     @sale.DiscounterPrice.ToString("F2")
+                </td>
+                <td class="text-center">
+                    <a class="btn btn-sm btn-default" href="/sales/@sale.Id">More Details</a>
                 </td>
             </tr>
         }

@@ -4,6 +4,7 @@
     using Models.Customers;
     using Microsoft.AspNetCore.Mvc;
     using Services.Models;
+    using CarDealer.Web.Infrastructure.Extensions;
 
     [Route("customers")]
     public class CustomersController : Controller
@@ -32,6 +33,7 @@
 
         [Route("{id}")]
         public IActionResult TotalSales(int id)
-            => this.View(this._customer.TotalSaleById(id));
+            => this.ViewOrNotFound(this._customer.TotalSaleById(id));
+        
     }
 }
