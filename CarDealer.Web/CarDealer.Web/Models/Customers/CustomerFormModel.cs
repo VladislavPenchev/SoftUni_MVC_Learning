@@ -3,7 +3,7 @@
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class CreateCustomerModel
+    public class CustomerFormModel
     {
         [Required]
         [MaxLength(200)]

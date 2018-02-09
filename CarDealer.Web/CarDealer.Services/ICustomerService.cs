@@ -13,5 +13,10 @@
 
         void Create(string name, DateTime birthday,bool isYoungDriver);
 
+        CustomerModel ById(int id);
+
+        void Edit(int id, string name, DateTime birthDay, bool isYoungDriver);
+
+        bool Exists(int id);
     }
 }
