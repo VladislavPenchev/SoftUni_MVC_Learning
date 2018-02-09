@@ -15,6 +15,33 @@
         {
             this._customer = customers;
         }
+
+        [Route(nameof(Create))]
+        public IActionResult Create() => View();
+
+        [HttpPost]
+        [Route(nameof(Create))]
+        public IActionResult Create(CreateCustomerModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            this._customer.Create(
+                model.Name,
+                model.BirthDay,
+                model.IsYoungDriver);
+
+            return RedirectToAction(nameof(All), new { order = OrderDirection.Ascending.ToString()});
+        }
+
+        [Route(nameof(Edit))]
+        public IActionResult Edit(int id)
+        {
+            return null;
+        }
+
         [Route("all/{order}")]
         public IActionResult All(string order)
         {

@@ -7,19 +7,33 @@
     using System;
     using CarDealer.Services.Models.Customers;
     using CarDealer.Services.Models.Sales;
+    using CarDealer.Data.Models;
 
     public class CustomerService : ICustomerService
     {
-        private readonly CarDealerDbContext db;
+        private readonly CarDealerDbContext _db;
 
         public CustomerService(CarDealerDbContext db)
         {
-            this.db = db;
+            this._db = db;
+        }
+
+        public void Create(string name, DateTime birthday, bool isYoungDriver)
+        {
+            var customer = new Customer
+            {
+                Name = name,
+                BirthDate = birthday,
+                IsYoungDriver = isYoungDriver
+            };
+
+            this._db.Add(customer);
+            this._db.SaveChanges();
         }
 
         public IEnumerable<CustomerModel> Ordered(OrderDirection order)
         {
-            var customersQuery = this.db.Customers.AsQueryable();
+            var customersQuery = this._db.Customers.AsQueryable();
 
             switch (order)
             {
@@ -50,7 +64,7 @@
         public CustomerTotalSalesModel TotalSaleById(int id)
 
                  => this
-                   .db
+                   ._db
                    .Customers
                    .Where(c => c.Id == id)
                    .Select(c => new CustomerTotalSalesModel
