@@ -6,6 +6,7 @@
     using CarDealer.Services.Cars.Models;
     using CarDealer.Services.Models.Cars;
     using CarDealer.Services.Models;
+    using CarDealer.Services.Models.Parts;
 
     public class CarService : ICarService
     {
