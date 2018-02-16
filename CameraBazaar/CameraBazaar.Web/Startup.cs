@@ -8,6 +8,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using CameraBazaar.Data;
     using CameraBazaar.Data.Models;
+    using CameraBazaar.Web.Infrastructure.Extensions;
 
     public class Startup
     {
@@ -23,7 +24,13 @@
             services.AddDbContext<CameraBazaarDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>(options =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                })
                 .AddEntityFrameworkStores<CameraBazaarDbContext>()
                 .AddDefaultTokenProviders();
             
@@ -31,6 +38,8 @@
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseDatabaseMigration();
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
