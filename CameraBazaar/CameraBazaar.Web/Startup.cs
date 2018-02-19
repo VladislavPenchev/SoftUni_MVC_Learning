@@ -33,6 +33,8 @@
                 })
                 .AddEntityFrameworkStores<CameraBazaarDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddDomainServices();
             
             services.AddMvc();
         }

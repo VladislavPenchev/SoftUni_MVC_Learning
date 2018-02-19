@@ -42,7 +42,7 @@
         public string VideoResolution { get; set; }
 
         [Display(Name = "Light Metering")]
-        public IEnumerable<LightMetering> LightMetering { get; set; }
+        public IEnumerable<LightMetering> LightMeterings { get; set; }
 
         [Required]
         [StringLength(6000)]
