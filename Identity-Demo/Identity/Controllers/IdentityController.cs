@@ -2,19 +2,25 @@
 {
     using Identity.Data;
     using Identity.Extensions;
+    using Identity.Models;
     using Identity.Models.Identity;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
+    using System.Threading.Tasks;
 
     [Authorize(Roles = GlobalConstants.AdministratorRole)]
     public class IdentityController : Controller
     {
-        private ApplicationDbContext _db;
+        private readonly ApplicationDbContext _db;
 
-        public IdentityController(ApplicationDbContext db)
+        private readonly UserManager<User> _usermanager;
+
+        public IdentityController(ApplicationDbContext db, UserManager<User> usermanager)
         {
             this._db = db;
+            this._usermanager = usermanager;
         }
 
         public IActionResult All()
@@ -32,6 +38,44 @@
                 .ToList();
 
             return View(users);
+        }
+
+        public async Task<IActionResult> Roles(string id)
+        {
+            var user =  await this._usermanager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var roles = await this._usermanager.GetRolesAsync(user);
+
+            return View(new UserWithRolesViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Roles = roles
+            });
+        }
+
+        public IActionResult Create() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateUserViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await this._usermanager.CreateAsync(new User
+            {
+                Email = model.Email,
+                UserName = model.Email
+            }, model.Password);
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

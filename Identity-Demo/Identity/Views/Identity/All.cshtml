@@ -5,6 +5,8 @@
 
 <h2>@ViewData["Title"]</h2>
 
+<a href="/identity/create" class="btn btn-primary">Add User</a>
+
 <table class="table table-bordered table-hover">
     <tr>
         <th>Username</th>
@@ -16,7 +18,9 @@
         <tr>
             <th>@user.UserName</th>
             <th>@user.Email</th>
-            <th></th>
+            <th>
+                <a href="/identity/roles/@user.Id" class="btn btn btn-default">View Roles</a>
+            </th>
         </tr>
     }
 </table>
