@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.Mvc;
     using CameraBazaar.Web.Models;
 
+    
     public class HomeController : Controller
     {
         public IActionResult Index()

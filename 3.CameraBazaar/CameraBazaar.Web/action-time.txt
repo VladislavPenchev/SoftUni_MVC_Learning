@@ -1,0 +1,5 @@
+2/23/2018 10:06:08 AM – HomeController.Index – 00:00:00.0241197
+2/23/2018 10:06:21 AM – AccountController.Login – 00:00:00.0444389
+2/23/2018 10:06:27 AM – AccountController.Login – 00:00:00.5530587
+2/23/2018 10:06:32 AM – AccountController.Login – 00:00:00.3000906
+2/23/2018 10:06:32 AM – HomeController.Index – 00:00:00.0106707

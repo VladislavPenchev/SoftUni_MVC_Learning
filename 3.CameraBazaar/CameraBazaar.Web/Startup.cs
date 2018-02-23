@@ -9,6 +9,7 @@
     using CameraBazaar.Data;
     using CameraBazaar.Data.Models;
     using CameraBazaar.Web.Infrastructure.Extensions;
+    using CameraBazaar.Web.Infrastructure.Filters;
 
     public class Startup
     {
@@ -36,7 +37,11 @@
 
             services.AddDomainServices();
             
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<LogAttribute>();
+                options.Filters.Add<MeasureTimeAttribute>();
+            });
         }
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
