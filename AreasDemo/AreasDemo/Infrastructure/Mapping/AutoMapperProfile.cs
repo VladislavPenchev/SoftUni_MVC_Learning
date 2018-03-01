@@ -1,6 +1,5 @@
 ﻿namespace AreasDemo.Infrastructure.Mapping
 {
-    using AreasDemo.Models;
     using AutoMapper;
     using System;
     using System.Linq;
