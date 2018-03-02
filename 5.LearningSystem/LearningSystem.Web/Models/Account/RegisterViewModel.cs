@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace LearningSystem.Web.Models.AccountViewModels
+﻿namespace LearningSystem.Web.Models.AccountViewModels
 {
+    using LearningSystem.Data;
+    using System.ComponentModel.DataAnnotations;
+
     public class RegisterViewModel
     {
+        [Required]
+        [StringLength(50)]
+        public string UserName { get; set; }
+
+        [Required]
+        [StringLength(DataConstants.UserNameMaxLength,MinimumLength = = DataConstants.UserNameMinLength)]
+        public string Name { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
